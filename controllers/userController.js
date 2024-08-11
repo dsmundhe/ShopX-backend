@@ -19,7 +19,7 @@ const userController = {
 
       // Email check in collection; if present, it will not register
       if (emails) {
-        return res.status(400).json({ message: "Email already registered." });
+        return res.json({ message: "Email already registered." });
       }
 
       // Check if password length is less than 6
