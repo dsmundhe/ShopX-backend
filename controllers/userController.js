@@ -11,7 +11,7 @@ const userController = {
 
       // Validate password presence
       if (!password) {
-        return res.status(400).json({ message: "Password is required." });
+        return res.json({ message: "Password is required." });
       }
 
       // Check if email is already registered
