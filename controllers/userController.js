@@ -24,9 +24,7 @@ const userController = {
 
       // Check if password length is less than 6
       if (password.length < 6) {
-        return res
-          .status(400)
-          .json({ message: "Password must be more than 6 characters." });
+        return res.json({ message: "Password must be more than 6 characters." });
       }
 
       // Convert password to hash code, here we pass (element and length)
