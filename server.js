@@ -22,6 +22,10 @@ app.use(cors());
 
 //middleware for , access which is present in json body
 
+app.get('/',(req,res)=>{
+  res.send("<h1>Backend connected successful!</h1>")
+})
+
 //create post listen on perticular port
 app.listen(PORT, () => {
   console.log("server started.......");
