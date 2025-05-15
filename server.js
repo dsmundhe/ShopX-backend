@@ -1,46 +1,47 @@
-//import ecpress from express
-const express = require("express");
-
-//create instance of express in app
-const app = express();
-
-//import port from .env file
-const PORT = process.env.PORT || 5000;
-
-//import dotenv file and config it
+// Load environment variables first
 require("dotenv").config();
 
-//import mongoose to create connection
+const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
-//import routers from userRoute file
-const router = require("./routes/userRouter");
-
- const cors =require('cors');
-app.use(express.json());
+// Create instance of express
+const app = express();
 app.use(cors());
 
-//middleware for , access which is present in json body
+// Middleware
+app.use(express.json());
 
-app.get('/',(req,res)=>{
-  res.send("<h1>Backend connected successful!</h1>")
-})
+// Import routers
+const router = require("./routes/userRouter");
 
-//create post listen on perticular port
-app.listen(PORT, () => {
-  console.log("server started.......");
+// Environment variables
+const PORT = process.env.PORT || 5000;
+const MONGO_URI = process.env.MongoDB_URL;
+
+// Test route
+app.get('/', (req, res) => {
+  res.send("<h1>Backend connected successfully!</h1>");
 });
 
-//import url from .env
-const URI = process.env.MongoDB_URL;
-mongoose
-  .connect(URI)
-  .then(() => {
-    console.log("mongoDB connected.....");
-  })
-  .catch((error) => {
-    console.log(error);
+// MongoDB connection
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 10000, // Optional: Add timeout
+})
+.then(() => {
+  console.log("MongoDB connected.....");
+
+  // Start server only after DB is connected
+  app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
   });
 
-//routers pass in milddle ware
+})
+.catch((error) => {
+  console.error("MongoDB connection error:", error.message);
+});
+
+// Routes middleware
 app.use("/user", router);
